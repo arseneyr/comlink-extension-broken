@@ -1,11 +1,7 @@
 {
   "name": "Chrome Extension Webpack",
-  "options_page": "options.html",
   "background": {
-    "page": "background.html"
-  },
-  "icons": {
-    "128": "icon-128.png"
+    "scripts": ["background.bundle.js"]
   },
   "content_scripts": [
     {
@@ -13,6 +9,5 @@
       "js": ["content.bundle.js"]
     }
   ],
-  "web_accessible_resources": ["worker.bundle.js"],
   "manifest_version": 2
 }

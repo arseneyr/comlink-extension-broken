@@ -33,9 +33,8 @@ var options = {
   context: path.resolve(__dirname, "src"),
   mode: process.env.NODE_ENV || "development",
   entry: {
-    background: "./js/background.ts",
-    content: "./js/content.ts",
-    worker: "./js/worker.ts",
+    background: "./js/background.js",
+    content: "./js/content.js",
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -58,18 +57,13 @@ var options = {
         loader: "html-loader",
         exclude: /node_modules/,
       },
-      {
-        test: /\.(j|t)sx?$/,
-        loader: "babel-loader",
-        exclude: /node_modules/,
-      },
     ],
   },
   resolve: {
     alias: alias,
     extensions: fileExtensions
       .map((extension) => "." + extension)
-      .concat([".jsx", ".js", ".tsx", ".ts", ".css"]),
+      .concat([".jsx", ".js", ".css"]),
   },
   plugins: [
     new ReloadPlugin({
@@ -95,24 +89,6 @@ var options = {
         },
       },
     ]),
-    new CopyWebpackPlugin([{ from: "./img/icon-128.png" }], {
-      copyUnmodified: true,
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "popup.html"),
-      filename: "popup.html",
-      chunks: ["popup"],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "options.html"),
-      filename: "options.html",
-      chunks: ["options"],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "background.html"),
-      filename: "background.html",
-      chunks: ["background"],
-    }),
     new WriteFilePlugin(),
   ],
 };

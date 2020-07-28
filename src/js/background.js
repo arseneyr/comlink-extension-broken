@@ -2,8 +2,8 @@ import * as Comlink from "comlink";
 import { createBackgroundEndpoint, isMessagePort } from "comlink-extension";
 import { browser } from "webextension-polyfill-ts";
 
-export class BackgroundEndpoint {
-  public getSubProxy() {
+class BackgroundEndpoint {
+  getSubProxy() {
     return Comlink.proxy({
       getB: () => {
         return "B";
@@ -11,7 +11,7 @@ export class BackgroundEndpoint {
     });
   }
 
-  public getA() {
+  getA() {
     return "A";
   }
 }

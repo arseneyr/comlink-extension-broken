@@ -1,8 +1,7 @@
 import * as Comlink from "comlink";
-import { createBackgroundEndpoint, isMessagePort } from "comlink-extension";
 
 export class BackgroundEndpoint {
-  public getSubProxy() {
+  getSubProxy() {
     return Comlink.proxy({
       getB: () => {
         return "B";
@@ -10,7 +9,7 @@ export class BackgroundEndpoint {
     });
   }
 
-  public getA() {
+  getA() {
     return "A";
   }
 }
