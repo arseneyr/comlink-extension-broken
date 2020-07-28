@@ -8,9 +8,6 @@ var webpack = require("webpack"),
   WriteFilePlugin = require("write-file-webpack-plugin"),
   ReloadPlugin = require("./ReloadPlugin");
 
-// load the secrets
-var alias = {};
-
 var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
 
 var fileExtensions = [
@@ -26,6 +23,8 @@ var fileExtensions = [
   "woff2",
 ];
 
+let alias = {};
+
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
 }
@@ -34,10 +33,9 @@ var options = {
   context: path.resolve(__dirname, "src"),
   mode: process.env.NODE_ENV || "development",
   entry: {
-    popup: "./js/popup.js",
-    options: "./js/options.js",
-    background: "./js/background.js",
-    content: "./js/content.js",
+    background: "./js/background.ts",
+    content: "./js/content.ts",
+    worker: "./js/worker.ts",
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -60,10 +58,18 @@ var options = {
         loader: "html-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.(j|t)sx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+      },
     ],
   },
   resolve: {
     alias: alias,
+    extensions: fileExtensions
+      .map((extension) => "." + extension)
+      .concat([".jsx", ".js", ".tsx", ".ts", ".css"]),
   },
   plugins: [
     new ReloadPlugin({
@@ -89,6 +95,9 @@ var options = {
         },
       },
     ]),
+    new CopyWebpackPlugin([{ from: "./img/icon-128.png" }], {
+      copyUnmodified: true,
+    }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup.html"),
       filename: "popup.html",
