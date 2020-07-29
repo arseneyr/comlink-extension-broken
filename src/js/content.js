@@ -8,9 +8,9 @@ const obj = Comlink.wrap(createEndpoint(browser.runtime.connect()));
 // const worker = new Worker();
 // const obj = Comlink.wrap(worker);
 
-Promise.all([obj.getSubProxy().then((s) => s.getB()), obj.getA()]).then(
-  ([a, b]) => {
-    console.log(a);
-    console.log(b);
-  }
-);
+obj
+  .getSubProxy()
+  .then((s) => s.getB())
+  .then(console.log);
+
+obj.getA().then(console.log);
